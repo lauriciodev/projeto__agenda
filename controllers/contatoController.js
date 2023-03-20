@@ -16,7 +16,7 @@ exports.register = async (req,res) =>{
   }
 
   req.flash("success","contato registrado com sucesso.");
-  req.session.save(() => res.redirect(`/contato/index/${contato.contato._id}`));
+  req.session.save(() => res.redirect("/"));
   return;
  }catch(e){
   console.log(e);
@@ -44,7 +44,7 @@ exports.edit = async function(req,res){
 
   if(contato.error.length > 0){
     req.flash("error",contato.error);
-    req.session.save(() => res.redirect("/"));
+    req.session.save(() => res.redirect(`/contato/index/${req.params.id}`));
     return;
   }
 
@@ -57,4 +57,14 @@ exports.edit = async function(req,res){
  }
 
 
+}
+
+exports.delete = async function(req,res){
+  if(!req.params.id) return res.render("404");
+  const user = await Contato.delete(req.params.id);
+  if(!user) return res.render("404");
+
+  req.flash("success","contato deletado com sucesso.");
+  req.session.save(() => res.redirect("/"));
+  return
 }
