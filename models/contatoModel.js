@@ -57,4 +57,12 @@ for(const key in this.body){
 }
 
 
+Contato.prototype.edit = async function(id){
+  if(typeof id !== "string") return;
+  this.validator();
+  if(this.error.length > 0)return;
+ this.contato = await contatoModel.findByIdAndUpdate(id,this.body,{new:true});
+}
+
+
 module.exports = Contato;
